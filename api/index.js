@@ -26,5 +26,3 @@ app.use("/api/user", userRoutes)
 // Start the server
 const PORT = process.env.PORT || 8000
 app.listen(PORT, () => console.log(`Server is running on port http://localhost:${PORT}`))
-
-// export const handler = serverless(app);

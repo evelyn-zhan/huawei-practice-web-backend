@@ -2,8 +2,9 @@ import express from "express"
 import cors from "cors"
 import dotenv from "dotenv"
 import mongoose from "mongoose"
+import serverless from "serverless-http";
 
-import userRoutes from "./routes/user.js"
+import userRoutes from "../routes/user.js"
 
 dotenv.config()
 
@@ -24,5 +25,7 @@ mongoose
 app.use("/api/user", userRoutes)
 
 // Start the server
-const PORT = process.env.PORT || 8000
-app.listen(PORT, () => console.log(`Server is running on port http://localhost:${PORT}`))
+// const PORT = process.env.PORT || 8000
+// app.listen(PORT, () => console.log(`Server is running on port http://localhost:${PORT}`))
+
+export const handler = serverless(app);

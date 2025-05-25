@@ -13,6 +13,7 @@ router.get("/", async (req, res) => {
     }
 })
 
+// GET user by Id for Login
 router.get("/:id", async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
@@ -23,6 +24,7 @@ router.get("/:id", async (req, res) => {
     }
 })
 
+// POST new user for Signup
 router.post("/", async (req, res) => {
     try {
         const newUser = new User(req.body)

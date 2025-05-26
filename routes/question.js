@@ -30,9 +30,12 @@ router.post("/", async (req, res) => {
             })
         }
 
+        const newQuestion = new Question({ question, formattedQuestion, type, options, answer, score })
+        const savedQuestion = await newQuestion.save()
+
         res.status(201).json({
             message: "New question created successfully!",
-            question: { question, formattedQuestion, type, options, answer, score }
+            question: savedQuestion
         })
     } catch (error) {
         res.status(500).json({

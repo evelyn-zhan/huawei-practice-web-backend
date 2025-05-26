@@ -3,6 +3,19 @@ import Question from "../models/Question.js"
 
 const router = express.Router()
 
+// GET all questions
+router.get("/", async (req, res) => {
+    try {
+        const questions = await Question.find()
+        res.status(200).json(questions)
+    } catch (error) {
+        res.status(500).json({
+            message: "Failed to get questions.",
+            error: error.message
+        })
+    }
+})
+
 // POST new question
 router.post("/", async (req, res) => {
     try {

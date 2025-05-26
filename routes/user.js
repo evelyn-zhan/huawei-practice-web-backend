@@ -20,12 +20,28 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
     try {
         const user = await User.findOne({ userId: req.params.id })
+
         if (!user) {
             return res.status(404).json({
                 message: "Oops! We couldn't find an account with that User ID."
             })
         }
-        res.status(200).json(user)  
+
+        if (user.password !== req.body.password) {
+            return res.status(401).json({
+                message: "Login failed. Password does not match."
+            })
+        }
+
+        res.status(200).json({
+            message: "Login successful!",
+            user: {
+                userId: user.userId,
+                username: user.username,
+                class: user.class,
+                role: user.role
+            }
+        })  
     } catch (error) {
         res.status(500).json({
             message: "Failed to get user.",

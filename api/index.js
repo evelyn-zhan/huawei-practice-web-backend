@@ -4,6 +4,7 @@ import dotenv from "dotenv"
 import mongoose from "mongoose"
 
 import userRoutes from "../routes/user.js"
+import questionRoutes from "../routes/question.js"
 
 dotenv.config()
 
@@ -22,6 +23,7 @@ mongoose
 
 // Routes
 app.use("/api/user", userRoutes)
+app.use("/api/question", questionRoutes)
 
 // Start the server
 const PORT = process.env.PORT || 8000

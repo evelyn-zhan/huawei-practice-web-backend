@@ -3,6 +3,7 @@ import mongoose from "mongoose"
 const questionSchema = new mongoose.Schema({
     question: { type: String, required: true },
     formattedQuestion: { type: String },
+    year: { type: Number, required: true },
     type: { type: String, required: true },
     options: { type: [String] },
     answer: { type: [String], required: true },

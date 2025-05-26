@@ -2,9 +2,11 @@ import mongoose from "mongoose"
 
 const questionSchema = new mongoose.Schema({
     question: { type: String, required: true },
+    trimmedQuestion: { type: String, required: true },
     type: { type: String, required: true },
     options: { type: [String] },
-    answer: { type: [String], required: true }
+    answer: { type: [String], required: true },
+    score: { type: Number, required: true }
 }, { timestamps: false })
 
 const Question = mongoose.model("Question", questionSchema)

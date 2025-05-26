@@ -30,7 +30,7 @@ router.post("/", async (req, res) => {
             })
         }
 
-        const newQuestion = new Question({ question, formattedQuestion, yeaar, type, options, answer, score })
+        const newQuestion = new Question({ question, formattedQuestion, year, type, options, answer, score })
         const savedQuestion = await newQuestion.save()
 
         res.status(201).json({

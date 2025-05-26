@@ -19,7 +19,7 @@ router.get("/", async (req, res) => {
 // POST new question
 router.post("/", async (req, res) => {
     try {
-        const { question, type, options, answer, score } = req.body
+        const { question, year, type, options, answer, score } = req.body
 
         const formattedQuestion = question.toLowerCase().replace(" ", "")
         const existingQuestion = await Question.findOne({ formattedQuestion })
@@ -30,7 +30,7 @@ router.post("/", async (req, res) => {
             })
         }
 
-        const newQuestion = new Question({ question, formattedQuestion, type, options, answer, score })
+        const newQuestion = new Question({ question, formattedQuestion, yeaar, type, options, answer, score })
         const savedQuestion = await newQuestion.save()
 
         res.status(201).json({

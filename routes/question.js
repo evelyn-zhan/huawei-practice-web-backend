@@ -21,7 +21,7 @@ router.post("/", async (req, res) => {
     try {
         const { question, year, type, options, answer, score } = req.body
 
-        const formattedQuestion = question.toLowerCase().replace(" ", "")
+        const formattedQuestion = question.toLowerCase().replace(/\s+/g, "")
         const existingQuestion = await Question.findOne({ formattedQuestion })
 
         if (existingQuestion) {

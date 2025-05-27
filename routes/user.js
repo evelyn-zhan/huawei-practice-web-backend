@@ -16,8 +16,8 @@ router.get("/", async (req, res) => {
     }
 })
 
-// GET user by Id for Login
-router.get("/:id", async (req, res) => {
+// POST user credentials for Login
+router.post("/:id", async (req, res) => {
     try {
         const user = await User.findOne({ userId: req.body.userId })
 

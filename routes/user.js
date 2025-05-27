@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
 })
 
 // POST user credentials for Login
-router.post("/:id", async (req, res) => {
+router.post("/login", async (req, res) => {
     try {
         const user = await User.findOne({ userId: req.body.userId })
 
@@ -51,7 +51,7 @@ router.post("/:id", async (req, res) => {
 })
 
 // POST new user for Signup
-router.post("/", async (req, res) => {
+router.post("/signup", async (req, res) => {
     try {
         const existingUser = await User.findOne({ userId: req.body.userId })
         

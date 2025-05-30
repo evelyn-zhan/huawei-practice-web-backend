@@ -5,7 +5,7 @@ const questionSchema = new mongoose.Schema({
     formattedQuestion: { type: String },
     year: { type: Number, required: true },
     type: { type: String, required: true },
-    options: { type: [String] },
+    options: { type: [String], required: true },
     answer: { type: [String], required: true },
     score: { type: Number, required: true }
 }, { timestamps: false })

@@ -25,7 +25,7 @@ router.post("/", async (req, res) => {
         const existingQuestion = await Question.findOne({ formattedQuestion })
 
         if (existingQuestion) {
-            res.status(400).json({
+            return res.status(400).json({
                 message: "Question already exists!"
             })
         }

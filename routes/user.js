@@ -16,12 +16,9 @@ router.get("/", async (req, res) => {
     else if (className === "if-b-sore") className = "IF-B Sore"
     else if (className === "if-c-sore") className = "IF-C Sore"
 
-    const filter = {
-        userId: new RegExp(`^${year.slice(-2)}`),
-        class: className
-    }
-
-    console.log(filter)
+    let filter = {}
+    if (year) filter.userId = new RegExp(`^${year.slice(-2)}`)
+    if (className) filter.class = className
 
     try {
         const users = await User.find(filter)

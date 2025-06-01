@@ -8,9 +8,25 @@ router.get("/", async (req, res) => {
     try {
         const questions = await Question.find()
         res.status(200).json(questions)
-    } catch (error) {
+    }
+    catch (error) {
         res.status(500).json({
             message: "Failed to get questions.",
+            error: error.message
+        })
+    }
+})
+
+// GET question by id
+router.get("/:id", async (req, res) => {
+    try {
+        const { id } = req.params
+        const question = await Question.findOne({ _id: id })
+        res.status(200).json(question)
+    }
+    catch (error) {
+        res.status(500).json({
+            message: "Failed to get question.",
             error: error.message
         })
     }
@@ -37,7 +53,8 @@ router.post("/", async (req, res) => {
             message: "New question created successfully!",
             question: savedQuestion
         })
-    } catch (error) {
+    }
+    catch (error) {
         res.status(500).json({
             message: "Failed to create new question.",
             error: error.message
@@ -63,7 +80,8 @@ router.put("/:id", async (req, res) => {
             message: "Question updated successfully!",
             updatedQuestion
         })
-    } catch (error) {
+    }
+    catch (error) {
         res.status(500).json({
             message: "Failed to update question.",
             error: error.message
@@ -82,8 +100,12 @@ router.delete("/:id", async (req, res) => {
             message: "Question deleted successfully!",
             deletedQuestion
         })
-    } catch (error) {
-
+    }
+    catch (error) {
+        res.status(500).json({
+            message: "Failed to delete question.",
+            error: error.message
+        })
     }
 })
 

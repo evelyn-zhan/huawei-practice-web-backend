@@ -1,6 +1,8 @@
 import express from "express"
 import cors from "cors"
 import dotenv from "dotenv"
+import session from "express-session"
+import cookieParser from "cookie-parser"
 import mongoose from "mongoose"
 
 import userRoutes from "../routes/user.js"
@@ -14,6 +16,17 @@ const app = express()
 // Middlewares
 app.use(cors())
 app.use(express.json())
+app.use(cookieParser())
+app.use(session({
+    name: "sid",
+    secret: process.env.SESSION_KEY,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60
+    }
+}))
 
 // MongoDB Connection
 mongoose

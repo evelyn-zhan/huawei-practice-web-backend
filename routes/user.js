@@ -1,4 +1,5 @@
 import express from "express"
+import bcrypt from "bcrypt"
 import User from "../models/User.js"
 
 const router = express.Router()
@@ -8,7 +9,8 @@ router.get("/", async (req, res) => {
     try {
         const users = await User.find()
         res.status(200).json(users)
-    } catch (error) {
+    }
+    catch (error) {
         res.status(500).json({
             message: "Failed to get users.",
             error: error.message
@@ -27,27 +29,55 @@ router.post("/login", async (req, res) => {
             })
         }
 
-        if (user.password !== req.body.password) {
+        // if (user.password !== req.body.password) {
+        //     return res.status(401).json({
+        //         message: "Login failed. Password does not match."
+        //     })
+        // }
+
+        const isMatch = await bcrypt.compare(req.body.password, user.password)
+        
+        if (!isMatch) {
             return res.status(401).json({
                 message: "Login failed. Password does not match."
             })
         }
 
+        req.session.user = {
+            userId: user.userId,
+            username: user.username,
+            class: user.class,
+            role: user.role
+        }
+
         res.status(200).json({
             message: "Login successful!",
-            user: {
-                userId: user.userId,
-                username: user.username,
-                class: user.class,
-                role: user.role
-            }
+            user: req.session.user
         })  
-    } catch (error) {
+    }
+    catch (error) {
         res.status(500).json({
             message: "Failed to get user.",
             error: error.message
         })
     }
+})
+
+// POST for Logout
+router.post("/logout", (req, res) => {
+    req.session.destroy((error) => {
+        if (error) {
+            return res.status(500).json({
+                message: "Logout failed.",
+                error: error.message
+            })
+        }
+
+        res.clearCookie("sid")
+        res.status(200).json({
+            message: "Logout successful!"
+        })
+    })
 })
 
 // POST new user for Signup
@@ -61,7 +91,10 @@ router.post("/signup", async (req, res) => {
             })
         }
 
-        const newUser = new User(req.body)
+        const saltRounds = 10
+        const hashedPassword = await bcrypt.hash(req.body.password, saltRounds)
+
+        const newUser = new User({ ...req.body, password: hashedPassword })
         const savedUser = await newUser.save()
         
         res.status(201).json({
@@ -73,7 +106,8 @@ router.post("/signup", async (req, res) => {
                 role: savedUser.role
             }
         })
-    } catch (error) {
+    }
+    catch (error) {
         res.status(500).json({
             message: "Failed to create new user.",
             error: error.message

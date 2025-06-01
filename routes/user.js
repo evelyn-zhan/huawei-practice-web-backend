@@ -29,12 +29,6 @@ router.post("/login", async (req, res) => {
             })
         }
 
-        // if (user.password !== req.body.password) {
-        //     return res.status(401).json({
-        //         message: "Login failed. Password does not match."
-        //     })
-        // }
-
         const isMatch = await bcrypt.compare(req.body.password, user.password)
         
         if (!isMatch) {

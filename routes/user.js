@@ -4,10 +4,27 @@ import User from "../models/User.js"
 
 const router = express.Router()
 
-// GET all users
+// GET users by year and class
 router.get("/", async (req, res) => {
+    const { year } = req.query
+    let { className } = req.query
+
+    if (className === "if-a-pagi") className = "IF-A Pagi"
+    else if (className === "if-b-pagi") className = "IF-B Pagi"
+    else if (className === "if-c-pagi") className = "IF-C Pagi"
+    else if (className === "if-a-sore") className = "IF-A Sore"
+    else if (className === "if-b-sore") className = "IF-B Sore"
+    else if (className === "if-c-sore") className = "IF-C Sore"
+
+    const filter = {
+        userId: new RegExp(`^${year.slice(-2)}`),
+        class: className
+    }
+
+    console.log(filter)
+
     try {
-        const users = await User.find()
+        const users = await User.find(filter)
         res.status(200).json(users)
     }
     catch (error) {

@@ -30,14 +30,7 @@ app.use(session({
 
 // MongoDB Connection
 mongoose
-.connect(process.env.MONGO_URI,
-    {
-        dbName: "huawei-practice-web",
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        serverSelectionTimeoutMS: 30000
-    }
-)
+.connect(process.env.MONGO_URI, { dbName: "huawei-practice-web" })
 .then(() => console.log("Connected to MongoDB"))
 .catch((error) => console.log(`MongoDB connection error: ${error}`))
 

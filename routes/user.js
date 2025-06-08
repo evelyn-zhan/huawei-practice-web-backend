@@ -102,7 +102,7 @@ router.put("/join-class", async (req, res) => {
     const { classId } = req.body
 
     try {
-        const user = await User.findOne({ _id: req.session.user._id })
+        const user = await User.findOne({ userId: req.session.user.userId })
 
         if (!user) {
             return res.status(404).json({

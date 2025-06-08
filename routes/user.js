@@ -99,10 +99,11 @@ router.post("/signup", async (req, res) => {
 
 // PUT user to update student's class
 router.put("/join-class", async (req, res) => {
-    const { classId } = req.body
+    const { userId, classId } = req.body
 
     try {
-        const user = await User.findOne({ userId: req.session.user.userId })
+        // const user = await User.findOne({ userId: req.session.user.userId })
+        const user = await User.findOne({ usesrId })
 
         if (!user) {
             return res.status(404).json({

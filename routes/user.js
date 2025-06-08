@@ -7,8 +7,10 @@ const router = express.Router()
 
 // POST user credentials for Login
 router.post("/login", async (req, res) => {
+    const { userId, password } = req.body
+
     try {
-        const user = await User.findOne({ userId: req.body.userId })
+        const user = await User.findOne({ userId })
 
         if (!user) {
             return res.status(404).json({
@@ -16,7 +18,7 @@ router.post("/login", async (req, res) => {
             })
         }
 
-        const isMatch = await bcrypt.compare(req.body.password, user.password)
+        const isMatch = await bcrypt.compare(password, user.password)
         
         if (!isMatch) {
             return res.status(401).json({
@@ -65,8 +67,10 @@ router.post("/logout", (req, res) => {
 
 // POST new user for Signup
 router.post("/signup", async (req, res) => {
+    const { userId, username, password, role } = req.body
+
     try {
-        const existingUser = await User.findOne({ userId: req.body.userId })
+        const existingUser = await User.findOne({ userId })
         
         if (existingUser) {
             return res.status(400).json({
@@ -75,7 +79,7 @@ router.post("/signup", async (req, res) => {
         }
 
         const saltRounds = 10
-        const hashedPassword = await bcrypt.hash(req.body.password, saltRounds)
+        const hashedPassword = await bcrypt.hash(password, saltRounds)
 
         const newUser = new User({ ...req.body, classId: null, password: hashedPassword })
         const savedUser = await newUser.save()
@@ -133,7 +137,7 @@ router.get("/", async (req, res) => {
 
     let filter = {}
     if (year) filter.userId = new RegExp(`^${year.slice(-2)}`)
-    if (classId) filter.classId = StudentClass.findOne({ _id: classId })
+    if (classId) filter.classId = classId
 
     try {
         const users = await User.find(filter)

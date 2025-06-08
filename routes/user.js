@@ -133,7 +133,7 @@ router.get("/", async (req, res) => {
 
     let filter = {}
     if (year) filter.userId = new RegExp(`^${year.slice(-2)}`)
-    if (className) filter.classId = StudentClass.findOne({ _id: classId })
+    if (classId) filter.classId = StudentClass.findOne({ _id: classId })
 
     try {
         const users = await User.find(filter)

@@ -133,14 +133,10 @@ router.put("/join-class", async (req, res) => {
 
 // GET users by year and class
 router.get("/", async (req, res) => {
-    const { year, classId } = req.query
-
-    let filter = {}
-    if (year) filter.userId = new RegExp(`^${year.slice(-2)}`)
-    if (classId) filter.classId = classId
+    const { classId } = req.query
 
     try {
-        const users = await User.find(filter)
+        const users = await User.find(classId)
         res.status(200).json(users)
     }
     catch (error) {

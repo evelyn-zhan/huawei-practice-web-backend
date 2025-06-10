@@ -1,5 +1,7 @@
 import express from "express"
 import bcrypt from "bcrypt"
+import mongoose from "mongoose"
+
 import User from "../models/User.js"
 import StudentClass from "../models/StudentClass.js"
 
@@ -67,7 +69,7 @@ router.post("/logout", (req, res) => {
 
 // POST new user for Signup
 router.post("/signup", async (req, res) => {
-    const { userId, username, password, role } = req.body
+    const { userId, password } = req.body
 
     try {
         const existingUser = await User.findOne({ userId })
@@ -101,6 +103,24 @@ router.post("/signup", async (req, res) => {
     }
 })
 
+// GET users by year and class
+router.get("/", async (req, res) => {
+    const { classId } = req.query
+
+    const classObjectId = new mongoose.Types.ObjectId(classId)
+
+    try {
+        const users = await User.find({ classId: classObjectId })
+        res.status(200).json(users)
+    }
+    catch (error) {
+        res.status(500).json({
+            message: "Internal server error! Failed to get users.",
+            error: error.message
+        })
+    }
+})
+
 // PUT user to update student's class
 router.put("/join-class", async (req, res) => {
     const { userId, classId } = req.body
@@ -126,22 +146,6 @@ router.put("/join-class", async (req, res) => {
     catch (error) {
         res.status(500).json({
             message: "Internal server error! Failed to join class.",
-            error: error.message
-        })
-    }
-})
-
-// GET users by year and class
-router.get("/", async (req, res) => {
-    const { classId } = req.query
-
-    try {
-        const users = await User.find(classId)
-        res.status(200).json(users)
-    }
-    catch (error) {
-        res.status(500).json({
-            message: "Internal server error! Failed to get users.",
             error: error.message
         })
     }

@@ -1,4 +1,5 @@
 import express from "express"
+
 import StudentClass from "../models/StudentClass.js"
 
 const router = express.Router()

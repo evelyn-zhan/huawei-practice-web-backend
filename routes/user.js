@@ -28,12 +28,10 @@ router.post("/login", async (req, res) => {
             })
         }
 
-        const studentClass = await StudentClass.findOne({ _id: user.classId })
-
         req.session.user = {
             userId: user.userId,
             username: user.username,
-            studentClass: studentClass ? studentClass.name : null,
+            classId: user.classId,
             role: user.role
         }
 

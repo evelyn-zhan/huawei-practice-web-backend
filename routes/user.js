@@ -3,7 +3,6 @@ import bcrypt from "bcrypt"
 import mongoose from "mongoose"
 
 import User from "../models/User.js"
-import StudentClass from "../models/StudentClass.js"
 
 const router = express.Router()
 

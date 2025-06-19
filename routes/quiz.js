@@ -22,7 +22,7 @@ router.post("/", async (req, res) => {
 
         const trueOrFalseQuestions =
             await Question
-            .find({ type: "true-or-false "})
+            .find({ type: "true-or-false" })
             .limit(Math.max(1, parseInt(0.2 * questionCount)))
         
         const wordAnswerQuestions =

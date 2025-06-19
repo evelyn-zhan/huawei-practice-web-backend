@@ -8,6 +8,7 @@ import mongoose from "mongoose"
 import userRoutes from "../routes/user.js"
 import questionRoutes from "../routes/question.js"
 import classRoutes from "../routes/class.js"
+import quizRoutes from "../routes/quiz.js"
 
 dotenv.config()
 
@@ -39,6 +40,7 @@ mongoose
 app.use("/api/user", userRoutes)
 app.use("/api/question", questionRoutes)
 app.use("/api/class", classRoutes)
+app.use("/api/quiz", quizRoutes)
 
 // Start the server
 const PORT = process.env.PORT || 8000

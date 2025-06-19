@@ -11,7 +11,7 @@ router.get("/", async (req, res) => {
     }
     catch (error) {
         res.status(500).json({
-            message: "Failed to get questions.",
+            message: "Internal server error! Failed to get questions.",
             error: error.message
         })
     }
@@ -26,7 +26,7 @@ router.get("/:id", async (req, res) => {
     }
     catch (error) {
         res.status(500).json({
-            message: "Failed to get question.",
+            message: "Internal server error! Failed to get question.",
             error: error.message
         })
     }
@@ -56,7 +56,7 @@ router.post("/", async (req, res) => {
     }
     catch (error) {
         res.status(500).json({
-            message: "Failed to create new question.",
+            message: "Internal server error! Failed to create new question.",
             error: error.message
         })
     }
@@ -83,7 +83,7 @@ router.put("/:id", async (req, res) => {
     }
     catch (error) {
         res.status(500).json({
-            message: "Failed to update question.",
+            message: "Internal server error! Failed to update question.",
             error: error.message
         })
     }
@@ -103,7 +103,7 @@ router.delete("/:id", async (req, res) => {
     }
     catch (error) {
         res.status(500).json({
-            message: "Failed to delete question.",
+            message: "Internal server error! Failed to delete question.",
             error: error.message
         })
     }

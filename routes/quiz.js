@@ -10,25 +10,25 @@ router.post("/", async (req, res) => {
     const { title, questionCount } = req.body
 
     try {
-        const singleAnswerMultipleChoiceQuestions =
-            await Question
-            .find({ type: "single-answer-multiple-choice" })
-            .limit(Math.max(1, parseInt(0.4 * questionCount)))
+        const singleAnswerMultipleChoiceQuestions = await Question.aggregate([
+            { $match: { type: "single-answer-multiple-choice" } },
+            { $sample: { size: Math.max(1, parseInt(0.4 * questionCount)) } }
+        ])
         
-        const multipleAnswerMultipleChoiceQuestions =
-            await Question
-            .find({ type: "multiple-answer-multiple-choice" })
-            .limit(Math.max(1, parseInt(0.3 * questionCount)))
+        const multipleAnswerMultipleChoiceQuestions = await Question.aggregate([
+            { $match: { type: "multiple-answer-multiple-choice" } },
+            { $sample: { size: Math.max(1, parseInt(0.3 * questionCount)) } }
+        ])
 
-        const trueOrFalseQuestions =
-            await Question
-            .find({ type: "true-or-false" })
-            .limit(Math.max(1, parseInt(0.2 * questionCount)))
+        const trueOrFalseQuestions = await Question.aggregate([
+            { $match: { type: "true-or-false" } },
+            { $sample: { size: Math.max(1, parseInt(0.2 * questionCount)) } }
+        ])
         
-        const wordAnswerQuestions =
-            await Question
-            .find({ type: "single-word-answer" })
-            .limit(questionCount - (singleAnswerMultipleChoiceQuestions.length + multipleAnswerMultipleChoiceQuestions.length + trueOrFalseQuestions.length))
+        const wordAnswerQuestions = await Question.aggregate([
+            { $match: { type: "single-word-answer" } },
+            { $sample: { size: questionCount - singleAnswerMultipleChoiceQuestions.length - multipleAnswerMultipleChoiceQuestions.length - trueOrFalseQuestions.length } }
+        ])
         
         const questions = [
             ...singleAnswerMultipleChoiceQuestions,

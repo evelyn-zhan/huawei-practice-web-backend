@@ -80,7 +80,7 @@ router.post("/signup", async (req, res) => {
         const saltRounds = 10
         const hashedPassword = await bcrypt.hash(password, saltRounds)
 
-        const newUser = new User({ ...req.body, classId: null, password: hashedPassword })
+        const newUser = new User({ ...req.body, password: hashedPassword })
         const savedUser = await newUser.save()
         
         res.status(201).json({
@@ -132,6 +132,12 @@ router.get("/", async (req, res) => {
 router.put("/join-class", async (req, res) => {
     const { userId, classId } = req.body
 
+    if (!mongoose.Types.ObjectId.isValid(classId)) {
+        return res.status(400).json({
+            message: "Invalid class ID."
+        })
+    }
+
     try {
         // const user = await User.findOne({ userId: req.session.user.userId })
         const user = await User.findOne({ userId })
@@ -142,7 +148,7 @@ router.put("/join-class", async (req, res) => {
             })
         }
 
-        user.classId = classId
+        user.classId = new mongoose.Types.ObjectId(classId)
         const updatedUser = await user.save()
 
         res.status(200).json({

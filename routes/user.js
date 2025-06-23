@@ -107,13 +107,7 @@ router.get("/", async (req, res) => {
     let filter = {}
 
     if (classId) {
-        if (!mongoose.Types.ObjectId.isValid(classId)) {
-            return res.status(400).json({
-                message: "Invalid Class ID."
-            })
-        }
-
-        filter.classId = new mongoose.Types.ObjectId(classId)
+        filter.classId = classId
     }
 
     try {
@@ -132,12 +126,6 @@ router.get("/", async (req, res) => {
 router.put("/join-class", async (req, res) => {
     const { userId, classId } = req.body
 
-    if (!mongoose.Types.ObjectId.isValid(classId)) {
-        return res.status(400).json({
-            message: "Invalid class ID."
-        })
-    }
-
     try {
         // const user = await User.findOne({ userId: req.session.user.userId })
         const user = await User.findOne({ userId })
@@ -148,7 +136,7 @@ router.put("/join-class", async (req, res) => {
             })
         }
 
-        user.classId = new mongoose.Types.ObjectId(classId)
+        user.classId = classId
         const updatedUser = await user.save()
 
         res.status(200).json({

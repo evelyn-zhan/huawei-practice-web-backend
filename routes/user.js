@@ -112,9 +112,9 @@ router.get("/", async (req, res) => {
                 message: "Invalid Class ID."
             })
         }
-    }
 
-    filter.classId = new mongoose.Types.ObjectId(classId)
+        filter.classId = new mongoose.Types.ObjectId(classId)
+    }
 
     try {
         const users = await User.find(filter)

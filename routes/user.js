@@ -100,14 +100,24 @@ router.post("/signup", async (req, res) => {
     }
 })
 
-// GET users by year and class
+// GET users by class
 router.get("/", async (req, res) => {
     const { classId } = req.query
 
-    const classObjectId = new mongoose.Types.ObjectId(classId)
+    let filter = {}
+
+    if (classId) {
+        if (!mongoose.Types.ObjectId.isValid(classId)) {
+            return res.status(400).json({
+                message: "Invalid Class ID."
+            })
+        }
+    }
+
+    filter.classId = new mongoose.Types.ObjectId(classId)
 
     try {
-        const users = await User.find({ classId: classObjectId })
+        const users = await User.find(filter)
         res.status(200).json(users)
     }
     catch (error) {

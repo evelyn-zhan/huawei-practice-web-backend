@@ -5,7 +5,8 @@ const userSchema = new mongoose.Schema({
     username: { type: String, required: true },
     classId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "StudentClass"
+        ref: "StudentClass",
+        default: null
     },
     role: { type: String, required: true },
     password: { type: String, required: true }

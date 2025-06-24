@@ -93,7 +93,7 @@ router.post("/signup", async (req, res) => {
     }
     catch (error) {
         res.status(500).json({
-            message: "Internal servor error! Failed to create new user.",
+            message: "Internal server error! Failed to create new user.",
             error: error.message
         })
     }

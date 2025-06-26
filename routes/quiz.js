@@ -8,7 +8,7 @@ const router = express.Router()
 
 // POST new quiz
 router.post("/", async (req, res) => {
-    const { title, questionCount } = req.body
+    const { title, questionCount, type, time } = req.body
 
     try {
         const singleAnswerMultipleChoiceQuestions = await Question.aggregate([
@@ -38,7 +38,7 @@ router.post("/", async (req, res) => {
             ...wordAnswerQuestions
         ]
 
-        const newQuiz = new Quiz({ title, questionCount, questions })
+        const newQuiz = new Quiz({ title, questionCount, questions, type, time })
         const savedQuiz = await newQuiz.save()
 
         res.status(201).json({

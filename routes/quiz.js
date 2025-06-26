@@ -75,4 +75,29 @@ router.post("/:quizId", async (req, res) => {
     }
 })
 
+router.get("/", async (req, res) => {
+    const { userId, quizId } = req.query
+
+    let filter = {}
+
+    if (userId) {
+        filter.userId = userId
+    }
+
+    if (quizId) {
+        filter.quizId = quizId
+    }
+
+    try {
+        const attemptedQuizzes = await QuizAttempt.find(filter)
+        res.status(200).json(attemptedQuizzes)
+    }
+    catch (error) {
+        res.status(500).json({
+            message: "Internal server error! Failed to get attempted quizzes.",
+            error: error.message
+        })
+    }
+})
+
 export default router

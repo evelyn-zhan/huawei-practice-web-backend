@@ -2,6 +2,7 @@ import express from "express"
 
 import Question from "../models/Question.js"
 import Quiz from "../models/Quiz.js"
+import QuizAttempt from "../models/QuizAttempt.js"
 
 const router = express.Router()
 
@@ -48,6 +49,27 @@ router.post("/", async (req, res) => {
     catch (error) {
         res.status(500).json({
             message: "Internal server error! Failed to create new quiz.",
+            error: error.message
+        })
+    }
+})
+
+router.post("/:quizId", async (req, res) => {
+    const { quizId } = req.params
+    const { userId, score } = req.body
+
+    try {
+        const newQuizAttempt = new QuizAttempt({ quizId, userId, score })
+        const savedQuizAttempt = await newQuizAttempt.save()
+
+        res.status(200).json({
+            message: "Woohoo! You have done a quiz!",
+            quizAttempt: savedQuizAttempt
+        })
+    }
+    catch (error) {
+        res.status(500).json({
+            message: "Internal server error!",
             error: error.message
         })
     }

@@ -99,6 +99,32 @@ router.post("/signup", async (req, res) => {
     }
 })
 
+// GET user by id
+router.get("/:id", async (req, res) => {
+    const { id } = req.params
+
+    try {
+        const user = await User.findOne({ userId: id })
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found."
+            })
+        }
+
+        res.status(200).json({
+            message: "User found!",
+            user
+        })
+    }
+    catch (error) {
+        res.status(500).json({
+            message: "Internal server error! Failed to get user.",
+            error: error.message
+        })
+    }
+})
+
 // GET users by class
 router.get("/", async (req, res) => {
     const { classId } = req.query

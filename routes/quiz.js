@@ -54,12 +54,13 @@ router.post("/", async (req, res) => {
     }
 })
 
-router.post("/:quizId", async (req, res) => {
-    const { quizId } = req.params
+// POST new quiz attempt
+router.post("/:id", async (req, res) => {
+    const { id } = req.params
     const { userId, score } = req.body
 
     try {
-        const newQuizAttempt = new QuizAttempt({ quizId, userId, score })
+        const newQuizAttempt = new QuizAttempt({ quizId: id, userId, score })
         const savedQuizAttempt = await newQuizAttempt.save()
 
         res.status(200).json({
@@ -75,6 +76,26 @@ router.post("/:quizId", async (req, res) => {
     }
 })
 
+// GET quiz by id
+router.get("/:id", async (req, res) => {
+    const { id } = req.params
+
+    try {
+        const quiz = await Quiz.findOne({ _id: id })
+        res.status(200).json({
+            message: "Quiz found!",
+            quiz
+        })
+    }
+    catch (error) {
+        res.status(500).json({
+            message: "Internal server error! Failed to get quiz.",
+            error: error.message
+        })
+    }
+})
+
+// GET quizzes by userId and quizId
 router.get("/", async (req, res) => {
     const { userId, quizId } = req.query
 
